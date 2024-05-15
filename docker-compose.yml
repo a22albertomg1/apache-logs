@@ -1,0 +1,36 @@
+version: '3'
+services:
+  apache:
+    hostname: apache
+    build: apache
+    ports:
+      - "80:80"
+    networks:
+      my_network:
+        ipv4_address: 192.168.46.50
+        aliases:
+          - omeusitio.lan
+    volumes:
+      - ./apache/tarefa5.conf:/etc/apache2/sites-enabled/tarefa5.conf
+      - ./omeusitio.lan:/opt/web/omeusitio.lan
+  cliente:
+    hostname: cliente
+    build: cliente
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    networks:
+      my_network:
+        ipv4_address: 192.168.46.150
+
+      
+
+
+
+networks:
+  my_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.46.0/24
